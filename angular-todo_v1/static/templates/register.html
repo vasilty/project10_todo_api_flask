@@ -1,0 +1,15 @@
+<div>
+  <h1>Register</h1>
+  <div ng-show="error">{{errorMessage}}</div>
+  <form class="form" ng-submit="register()">
+      <label>Username</label>
+      <input type="text" name="username" ng-model="registerForm.username" required>
+      <label>Password</label>
+      <input type="password" name="password" ng-model="registerForm.password" required>
+      <label>Verify password</label>
+      <input type="password" name="verify_password" ng-model="registerForm.verify_password" required>
+      <div>
+        <input type="submit">
+      </div>
+  </form>
+</div>

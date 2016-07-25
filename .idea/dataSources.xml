@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="3764362261">
+    <data-source source="LOCAL" name="Sqlite (Xerial) - todos.sqlite" uuid="809cfb6c-f2d0-4aa6-ad39-14ddbc7ce155">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/angular-todo_v1/todos.sqlite</jdbc-url>
+    </data-source>
+  </component>
+</project>

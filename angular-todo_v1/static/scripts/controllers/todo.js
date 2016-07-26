@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('todoListApp')
-.controller('todoCtrl', function($scope, Todo, flash, $http, $q) {
+.controller('todoCtrl', function($scope, Todo, flash, $http) {
   $scope.setToken = function () {
     var token = window.localStorage['jwtToken'];
     if(token) {
@@ -26,19 +26,13 @@ angular.module('todoListApp')
   $scope.saveTodos = function() {
     $scope.setToken();
 
-    // create a new instance of deferred
-    var deferred = $q.defer();
-
     var filteredTodos = $scope.todos.filter(function(todo){
 //      if(todo.edited) {
         return todo;
 //      }
     });
 
-    var messages = [];
-
-
-    // flash("TODOs saved successfully!");
+    flash("TODOs saved successfully!");
 
     filteredTodos.forEach(function(todo) {
         if (todo.id) {
@@ -46,13 +40,10 @@ angular.module('todoListApp')
                 // success
                 function(data){
                     // flash("TODOs saved successfully!");
-                    messages.push('u');
                 },
                 // error
                 function (data) {
-                    // flash('error', data.data);
-                    messages.push(data.data);
-
+                    flash('error', data.data);
                 });
 
         } else {
@@ -63,21 +54,12 @@ angular.module('todoListApp')
                 },
                 // error
                 function (data) {
-                    // flash('error', data.data);
+                    flash('error', data.data);
                 }
             );
-
-            messages.push('s')
         }
-
-
-
     });
 
-    deferred.resolve(messages);
-    console.log(deferred.promise.$$state)
-
   };
-
 
 });

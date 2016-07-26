@@ -1,4 +1,5 @@
 from base64 import b64encode
+import json
 import unittest
 
 from playhouse.test_utils import test_database
@@ -87,8 +88,9 @@ class UserResourcesTests(ResourcesTests):
         }
         with test_database(TEST_DB, (models.User,)):
             rv = self.app.post('/api/v1/users', data=data)
+            rv_data = json.loads(rv.data.decode())
             self.assertEqual(rv.status_code, 201)
-            self.assertIn(data['username'], rv.data.decode())
+            self.assertEqual(data['username'], rv_data['username'])
 
     def test_bad_registration(self):
         data = {
@@ -154,9 +156,9 @@ class UserResourcesTests(ResourcesTests):
             headers = {'Authorization': 'Basic %s' % user_password}
 
             rv = self.app.get('/api/v1/users/token', headers=headers)
+            rv_data = json.loads(rv.data.decode())
             self.assertEqual(rv.status_code, 200)
-            self.assertIn('token', rv.data.decode())
-            self.assertIn(token, rv.data)
+            self.assertEqual(token.decode(), rv_data['token'])
 
 
 class TodoListResourcesTests(ResourcesTests):
@@ -165,13 +167,9 @@ class TodoListResourcesTests(ResourcesTests):
             TodoModelTests.create_todos()
 
             rv = self.app.get('/api/v1/todos')
+            rv_data = json.loads(rv.data.decode())
             self.assertEqual(rv.status_code, 200)
-            self.assertIn(models.Todo.get(models.Todo.id == 1).name,
-                          rv.data.decode())
-            self.assertIn(models.Todo.get(models.Todo.id == 2).name,
-                          rv.data.decode())
-            self.assertIn(models.Todo.get(models.Todo.id == 3).name,
-                          rv.data.decode())
+            self.assertEqual(len(rv_data), models.Todo.select().count())
 
     def test_post_todo(self):
         data = {
@@ -227,9 +225,10 @@ class TodoResourcesTest(ResourcesTests):
             TodoModelTests.create_todos()
 
             rv = self.app.get('/api/v1/todos/1')
+            rv_data = json.loads(rv.data.decode())
             self.assertEqual(rv.status_code, 200)
-            self.assertIn(models.Todo.get(models.Todo.id == 1).name,
-                          rv.data.decode())
+            self.assertEqual(models.Todo.get(models.Todo.id == 1).name,
+                          rv_data['name'])
 
     def test_get_single_todo_404(self):
         with test_database(TEST_DB, (models.Todo,)):
@@ -250,8 +249,10 @@ class TodoResourcesTest(ResourcesTests):
             token = user.generate_auth_token()
             headers = {'Authorization': 'Token %s' % token.decode("ascii")}
             rv = self.app.put('/api/v1/todos/1', data=data, headers=headers)
+            rv_data = json.loads(rv.data.decode())
             self.assertEqual(rv.status_code, 200)
-            self.assertIn(data["name"], rv.data.decode())
+            self.assertEqual(data['name'], rv_data['name'])
+            self.assertEqual(data['completed'], rv_data['completed'])
             self.assertEqual(rv.location, 'http://localhost/api/v1/todos/1')
 
     def test_update_todo_unauthorized(self):

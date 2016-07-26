@@ -27,9 +27,9 @@ angular.module('todoListApp')
     $scope.setToken();
 
     var filteredTodos = $scope.todos.filter(function(todo){
-//      if(todo.edited) {
-        return todo;
-//      }
+        if(todo.edited) {
+            return todo;
+        }
     });
 
     flash("TODOs saved successfully!");

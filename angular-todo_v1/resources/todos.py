@@ -1,4 +1,3 @@
-import json
 from flask import Blueprint, jsonify, make_response
 
 from flask_restful import (Resource, Api, reqparse, fields, marshal,
@@ -7,15 +6,16 @@ from flask_restful import (Resource, Api, reqparse, fields, marshal,
 from auth import auth
 import models
 
+
 todo_fields = {
     'id': fields.Integer,
     'name': fields.String,
-    'edited': fields.Boolean,
     'completed': fields.Boolean,
 }
 
 
 def todo_or_404(todo_id):
+    """Returns TODO if exists or 404 if not."""
     try:
         todo = models.Todo.get(models.Todo.id == todo_id)
     except models.Todo.DoesNotExist:
@@ -35,13 +35,6 @@ class TodoList(Resource):
             trim=True,
         )
         self.reqparse.add_argument(
-            'edited',
-            required=False,
-            default=False,
-            type=inputs.boolean,
-            location=['form', 'json'],
-        )
-        self.reqparse.add_argument(
             'completed',
             required=False,
             default=False,
@@ -51,21 +44,20 @@ class TodoList(Resource):
         super().__init__()
 
     def get(self):
-        todos = [marshal(todo, todo_fields) for todo in models.Todo.select()
-            .order_by(models.Todo.completed, models.Todo.created_at.desc())]
-        return todos
+        """GET: Returns all TODOs sorted by completed attribute and then by
+        time created."""
+        todos = models.Todo.select().order_by(
+            models.Todo.completed, models.Todo.created_at.desc())
+        return [marshal(todo, todo_fields) for todo in todos]
 
-    # @marshal_with(todo_fields)
     @auth.login_required
     def post(self):
+        """POST: Creates a new TODO."""
         args = self.reqparse.parse_args()
         try:
             todo = models.Todo.create(**args)
         except Exception as error:
-            # return make_response(jsonify({'error': str(error)}), 400)
             return str(error), 400
-            # raise errors.AlreadyExistsError(
-            #     'TODO with that name already exists.', 400)
         else:
             return (marshal(todo, todo_fields), 201, {
                 'Location': url_for('resources.todos.todo', todo_id=todo.id)})
@@ -82,12 +74,6 @@ class Todo(Resource):
             trim=True,
         )
         self.reqparse.add_argument(
-            'edited',
-            required=False,
-            type=inputs.boolean,
-            location=['form', 'json'],
-        )
-        self.reqparse.add_argument(
             'completed',
             required=False,
             type=inputs.boolean,
@@ -97,11 +83,12 @@ class Todo(Resource):
 
     @marshal_with(todo_fields)
     def get(self, todo_id):
+        """GET: Returns a single TODO."""
         return todo_or_404(todo_id)
 
-    # @marshal_with(todo_fields)
     @auth.login_required
     def put(self, todo_id):
+        """PUT: Updates a single TODO."""
         args = self.reqparse.parse_args()
         cleaned_args = {key: value for (key, value) in args.items()
                         if value is not None}
@@ -116,9 +103,11 @@ class Todo(Resource):
 
     @auth.login_required
     def delete(self, todo_id):
+        """DELETE: Deletes a single TODO."""
         todo = todo_or_404(todo_id)
         todo.delete_instance()
         return '', 204, {'Location': url_for('resources.todos.todos')}
+
 
 todos_api = Blueprint('resources.todos', __name__)
 api = Api(todos_api, catch_all_404s=True)

@@ -11,9 +11,9 @@ SECRET_KEY = 'AHD%#274%dfna2$!l95fDBkrgnkr873^%@fk'
 
 
 class Todo(Model):
+    """Todo model class."""
     name = CharField(unique=True)
     completed = BooleanField(default=False)
-    edited = BooleanField(default=False)
     created_at = DateTimeField(default=datetime.datetime.now)
 
     class Meta:
@@ -21,6 +21,7 @@ class Todo(Model):
 
 
 class User(Model):
+    """User model class."""
     username = CharField(unique=True)
     password = CharField()
 
@@ -28,9 +29,11 @@ class User(Model):
         database = DATABASE
 
     @classmethod
-    def create_user(cls, username, password, **kwargs):
+    def create_user(cls, username, password):
+        """Creates a user."""
         try:
             cls.select().where(cls.username ** username).get()
+        # If user with that username doesn't exist, create a user.
         except cls.DoesNotExist:
             user = cls(username=username)
             user.password = user.set_password(password)
@@ -41,6 +44,7 @@ class User(Model):
 
     @staticmethod
     def verify_auth_token(token):
+        """Verifies an authentication token."""
         serializer = Serializer(SECRET_KEY)
         try:
             data = serializer.loads(token)
@@ -52,12 +56,15 @@ class User(Model):
 
     @staticmethod
     def set_password(password):
+        """Sets user password."""
         return HASHER.hash(password)
 
     def verify_password(self, password):
+        """Verifies user password."""
         return HASHER.verify(self.password, password)
 
     def generate_auth_token(self, expires=3600):
+        """Generates authentication token."""
         serializer = Serializer(SECRET_KEY, expires_in=expires)
         return serializer.dumps({'id': self.id})
 

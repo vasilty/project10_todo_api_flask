@@ -37,7 +37,10 @@ class UserList(Resource):
         args = self.reqparse.parse_args()
         if args['password'] == args['verify_password']:
             try:
-                user = models.User.create_user(**args)
+                user = models.User.create_user(
+                    username=args['username'],
+                    password=args['password'],
+                )
             except Exception as error:
                 return {'error': str(error)}, 400
             return marshal(user, user_fields), 201

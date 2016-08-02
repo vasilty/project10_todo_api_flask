@@ -1,7 +1,7 @@
 angular.module('todoListApp')
     .controller('registerController',
-      ['$scope', '$location', 'AuthService', 'flash',
-      function ($scope, $location, AuthService, flash) {
+      ['$scope', '$location', 'AuthService', 'flash', '$timeout',
+      function ($scope, $location, AuthService, flash, $timeout) {
     
         $scope.register = function () {
     
@@ -17,6 +17,7 @@ angular.module('todoListApp')
             register.then(function () {
               flash("You have been successfully registered!"); 
               $location.path('/login');
+              $timeout(function() {flash([])}, 2000);
               $scope.disabled = false;
               $scope.registerForm = {};
             })

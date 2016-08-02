@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('todoListApp')
-.controller('todoCtrl', function($scope, Todo, flash, $http) {
+.controller('todoCtrl', function($scope, Todo, flash, $http, $timeout) {
   $scope.setToken = function () {
     var token = window.localStorage['jwtToken'];
     if(token) {
@@ -19,6 +19,7 @@ angular.module('todoListApp')
         // error    
         }, function (data) {
           flash('error', data.data);
+          $timeout(function() {flash([])}, 2000);
         });
   };
 
@@ -32,7 +33,7 @@ angular.module('todoListApp')
         }
     });
 
-    flash("TODOs saved successfully!");
+    //flash("TODOs saved successfully!");
 
     filteredTodos.forEach(function(todo) {
         if (todo.id) {
@@ -44,6 +45,7 @@ angular.module('todoListApp')
                 // error
                 function (data) {
                     flash('error', data.data);
+                    $timeout(function() {flash([])}, 2000);
                 });
 
         } else {
@@ -55,6 +57,7 @@ angular.module('todoListApp')
                 // error
                 function (data) {
                     flash('error', data.data);
+                    $timeout(function() {flash([])}, 2000);
                 }
             );
         }

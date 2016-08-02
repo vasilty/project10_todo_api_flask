@@ -1,6 +1,6 @@
 angular.module('todoListApp').controller('logoutController',
-  ['$scope', '$location', 'AuthService', 'flash',
-  function ($scope, $location, AuthService, flash) {
+  ['$scope', '$location', 'AuthService', 'flash', '$timeout',
+  function ($scope, $location, AuthService, flash, $timeout) {
 
     $scope.logout = function () {
 
@@ -9,6 +9,7 @@ angular.module('todoListApp').controller('logoutController',
         .then(function () {
           flash("You have been successfully logged out!");
           $location.path('/');
+          $timeout(function() {flash([])}, 2000);
         });
 
     };

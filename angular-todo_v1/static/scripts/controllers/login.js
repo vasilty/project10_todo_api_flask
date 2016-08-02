@@ -1,7 +1,7 @@
 angular.module('todoListApp')
     .controller('loginController',
-      ['$scope', '$location', 'AuthService', 'flash',
-      function ($scope, $location, AuthService, flash) {
+      ['$scope', '$location', 'AuthService', 'flash', '$timeout',
+      function ($scope, $location, AuthService, flash, $timeout) {
 
         $scope.login = function () {
 
@@ -15,6 +15,7 @@ angular.module('todoListApp')
             .then(function () {
               flash("You have been successfully logged in!");
               $location.path('/');
+              $timeout(function() {flash([])}, 2000);
               $scope.disabled = false;
               $scope.loginForm = {};
             })

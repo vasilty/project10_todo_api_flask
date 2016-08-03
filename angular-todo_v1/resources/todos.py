@@ -57,7 +57,7 @@ class TodoList(Resource):
         try:
             todo = models.Todo.create(**args)
         except Exception as error:
-            return str(error), 400
+            return {"message": str(error)}, 400
         else:
             return (marshal(todo, todo_fields), 201, {
                 'Location': url_for('resources.todos.todo', todo_id=todo.id)})
@@ -97,7 +97,7 @@ class Todo(Resource):
         try:
             query.execute()
         except Exception as error:
-            return str(error), 400
+            return {"message": str(error)}, 400
         return (marshal(todo_or_404(todo_id), todo_fields), 200,
                 {"Location": url_for('resources.todos.todo', todo_id=todo_id)})
 

@@ -11,16 +11,23 @@ angular.module('todoListApp')
 
   $scope.deleteTodo = function(todo, index) {
     $scope.setToken();
+    var errorMessage = '';
+
     todo.$delete(
         // success
         function(response) {
           flash("TODO successfully deleted.");
+          $timeout(function() {flash([])}, 2000);
           $scope.todos.splice(index, 1);
         // error    
         }, function (error) {
-          flash('error', error.data);
+          if(error.status === 401) {
+              errorMessage = error.data;
+          } else {
+              errorMessage = error.data.message;
+          }
+          flash('error', errorMessage);
           $timeout(function() {flash([])}, 2000);
-          console.log(error);
         });
   };
 
@@ -34,33 +41,45 @@ angular.module('todoListApp')
         }
     });
 
+    var errorMessage = '';
+
     //flash("TODOs saved successfully!");
 
     filteredTodos.forEach(function(todo) {
         if (todo.id) {
             todo.$update(
                 // success
-                function(data){
+                function(response){
                     // flash("TODOs saved successfully!");
                 },
                 // error
-                function (data) {
-                    flash('error', data.data);
-                    $timeout(function() {flash([])}, 2000);
+                function (error) {
+                  if(error.status === 401) {
+                      errorMessage = error.data;
+                  } else {
+                      errorMessage = error.data.message;
+                  }
+                  flash('error', errorMessage);
+                  $timeout(function() {flash([])}, 2000);
                 });
 
         } else {
             todo.$save(
                 // success
-                function(data){
+                function(response){
                     // flash("TODOs saved successfully!");
                 },
                 // error
-                function (data) {
-                    flash('error', data.data);
-                    $timeout(function() {flash([])}, 2000);
-                }
-            );
+                function (error) {
+                  console.log(error);
+                  if(error.status === 401) {
+                      errorMessage = error.data;
+                  } else {
+                      errorMessage = error.data.message;
+                  }
+                  flash('error', errorMessage);
+                  $timeout(function() {flash([])}, 2000);
+                });
         }
     });
 

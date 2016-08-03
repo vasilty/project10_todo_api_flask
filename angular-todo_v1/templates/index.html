@@ -11,16 +11,14 @@
 
   <h1>My TODOs!</h1>
 
+    <div class="buttons" ng-controller="logoutController">
+        <button><a class="button-link" href="/#/">Home</a></button>
+        <button><a class="button-link" href="#register">Register</a></button>
+        <button><a class="button-link" href="#login">Login</a></button>
+        <button><a class="button-link" ng-click='logout()'>Logout</a></button>
+    </div>
+
   <div ng-view=""></div>
-
-
-<div class="buttons" ng-controller="logoutController">
-    <button><a class="button-link" href="/#/">Home</a></button>
-    <button><a class="button-link" href="#register">Register</a></button>
-    <button><a class="button-link" href="#login">Login</a></button>
-    <button><a class="button-link" ng-click='logout()'>Logout</a></button>
-</div>
-
 
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-resource.min.js"></script>

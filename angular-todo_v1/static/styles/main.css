@@ -103,9 +103,7 @@ input[type=submit] {
 }
 
 .buttons{
-    position: absolute;
-    top: 10%;
-    right: 10%;
+    position: relative;
 }
 
 button {
@@ -143,4 +141,5 @@ button {
 
 ol {
     list-style: none;
+    padding-left: 0px;
 }

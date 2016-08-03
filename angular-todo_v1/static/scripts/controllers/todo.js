@@ -13,13 +13,14 @@ angular.module('todoListApp')
     $scope.setToken();
     todo.$delete(
         // success
-        function(data) {
+        function(response) {
           flash("TODO successfully deleted.");
           $scope.todos.splice(index, 1);
         // error    
-        }, function (data) {
-          flash('error', data.data);
+        }, function (error) {
+          flash('error', error.data);
           $timeout(function() {flash([])}, 2000);
+          console.log(error);
         });
   };
 

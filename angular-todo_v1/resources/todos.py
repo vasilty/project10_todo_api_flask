@@ -1,7 +1,7 @@
-from flask import Blueprint, jsonify, make_response
+from flask import Blueprint
 
 from flask_restful import (Resource, Api, reqparse, fields, marshal,
-                           marshal_with, abort, url_for, inputs)
+                           abort, url_for, inputs)
 
 from auth import auth
 import models
@@ -80,11 +80,6 @@ class Todo(Resource):
             location=['form', 'json'],
         )
         super().__init__()
-
-    # @marshal_with(todo_fields)
-    # def get(self, todo_id):
-    #     """GET: Returns a single TODO."""
-    #     return todo_or_404(todo_id)
 
     @auth.login_required
     def put(self, todo_id):

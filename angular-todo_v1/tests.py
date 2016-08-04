@@ -220,23 +220,6 @@ class TodoListResourcesTests(ResourcesTests):
 
 
 class TodoResourcesTest(ResourcesTests):
-    # def test_get_single_todo(self):
-    #     with test_database(TEST_DB, (models.Todo,)):
-    #         TodoModelTests.create_todos()
-    #
-    #         rv = self.app.get('/api/v1/todos/1')
-    #         rv_data = json.loads(rv.data.decode())
-    #         self.assertEqual(rv.status_code, 200)
-    #         self.assertEqual(models.Todo.get(models.Todo.id == 1).name,
-    #                       rv_data['name'])
-    #
-    # def test_get_single_todo_404(self):
-    #     with test_database(TEST_DB, (models.Todo,)):
-    #         TodoModelTests.create_todos()
-    #
-    #         rv = self.app.get('/api/v1/todos/4')
-    #         self.assertEqual(rv.status_code, 404)
-
     def test_update_todo(self):
         data = {
             "name": "Feed the cat",

@@ -1,7 +1,7 @@
-from flask import Blueprint, jsonify, make_response
+from flask import Blueprint
 
 from flask_restful import (Resource, Api, reqparse, fields, marshal,
-                           marshal_with, abort, url_for, inputs)
+                           abort, url_for, inputs)
 
 from auth import auth
 import models
@@ -57,7 +57,7 @@ class TodoList(Resource):
         try:
             todo = models.Todo.create(**args)
         except Exception as error:
-            return str(error), 400
+            return {"message": str(error)}, 400
         else:
             return (marshal(todo, todo_fields), 201, {
                 'Location': url_for('resources.todos.todo', todo_id=todo.id)})
@@ -81,11 +81,6 @@ class Todo(Resource):
         )
         super().__init__()
 
-    @marshal_with(todo_fields)
-    def get(self, todo_id):
-        """GET: Returns a single TODO."""
-        return todo_or_404(todo_id)
-
     @auth.login_required
     def put(self, todo_id):
         """PUT: Updates a single TODO."""
@@ -97,7 +92,7 @@ class Todo(Resource):
         try:
             query.execute()
         except Exception as error:
-            return str(error), 400
+            return {"message": str(error)}, 400
         return (marshal(todo_or_404(todo_id), todo_fields), 200,
                 {"Location": url_for('resources.todos.todo', todo_id=todo_id)})
 
@@ -110,7 +105,7 @@ class Todo(Resource):
 
 
 todos_api = Blueprint('resources.todos', __name__)
-api = Api(todos_api, catch_all_404s=True)
+api = Api(todos_api)
 api.add_resource(
     TodoList,
     '/todos',

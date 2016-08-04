@@ -8,8 +8,8 @@ angular.module('todoListApp').controller('logoutController',
       AuthService.logout()
         .then(function () {
           flash("You have been successfully logged out!");
-          $location.path('/');
           $timeout(function() {flash([])}, 2000);
+          $location.path('/');
         });
 
     };

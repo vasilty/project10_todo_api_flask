@@ -7,7 +7,6 @@ angular.module('todoListApp')
     
           // initial values
           $scope.error = false;
-          $scope.disabled = true;
     
           // call register from service
           var register = AuthService.register($scope.registerForm.username,
@@ -18,14 +17,12 @@ angular.module('todoListApp')
               flash("You have been successfully registered!"); 
               $location.path('/login');
               $timeout(function() {flash([])}, 2000);
-              $scope.disabled = false;
               $scope.registerForm = {};
             })
             // handle error
             .catch(function (error) {
               $scope.error = true;
               $scope.errorMessage = error;
-              $scope.disabled = false;
               $scope.registerForm = {};
             });
     

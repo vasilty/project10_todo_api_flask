@@ -220,22 +220,22 @@ class TodoListResourcesTests(ResourcesTests):
 
 
 class TodoResourcesTest(ResourcesTests):
-    def test_get_single_todo(self):
-        with test_database(TEST_DB, (models.Todo,)):
-            TodoModelTests.create_todos()
-
-            rv = self.app.get('/api/v1/todos/1')
-            rv_data = json.loads(rv.data.decode())
-            self.assertEqual(rv.status_code, 200)
-            self.assertEqual(models.Todo.get(models.Todo.id == 1).name,
-                          rv_data['name'])
-
-    def test_get_single_todo_404(self):
-        with test_database(TEST_DB, (models.Todo,)):
-            TodoModelTests.create_todos()
-
-            rv = self.app.get('/api/v1/todos/4')
-            self.assertEqual(rv.status_code, 404)
+    # def test_get_single_todo(self):
+    #     with test_database(TEST_DB, (models.Todo,)):
+    #         TodoModelTests.create_todos()
+    #
+    #         rv = self.app.get('/api/v1/todos/1')
+    #         rv_data = json.loads(rv.data.decode())
+    #         self.assertEqual(rv.status_code, 200)
+    #         self.assertEqual(models.Todo.get(models.Todo.id == 1).name,
+    #                       rv_data['name'])
+    #
+    # def test_get_single_todo_404(self):
+    #     with test_database(TEST_DB, (models.Todo,)):
+    #         TodoModelTests.create_todos()
+    #
+    #         rv = self.app.get('/api/v1/todos/4')
+    #         self.assertEqual(rv.status_code, 404)
 
     def test_update_todo(self):
         data = {
@@ -254,6 +254,21 @@ class TodoResourcesTest(ResourcesTests):
             self.assertEqual(data['name'], rv_data['name'])
             self.assertEqual(data['completed'], rv_data['completed'])
             self.assertEqual(rv.location, 'http://localhost/api/v1/todos/1')
+
+    def test_update_todo_unique_name_check(self):
+        data = {
+            "name": "Do the dishes",
+            "completed": True,
+        }
+        with test_database(TEST_DB, (models.User, models.Todo)):
+            TodoModelTests.create_todos()
+            user = models.User.create_user(username="user1",
+                                           password="password")
+            token = user.generate_auth_token()
+            headers = {'Authorization': 'Token %s' % token.decode("ascii")}
+            rv = self.app.put('/api/v1/todos/1', data=data, headers=headers)
+            rv_data = json.loads(rv.data.decode())
+            self.assertEqual(rv.status_code, 400)
 
     def test_update_todo_unauthorized(self):
         data = {

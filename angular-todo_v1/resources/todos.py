@@ -81,10 +81,10 @@ class Todo(Resource):
         )
         super().__init__()
 
-    @marshal_with(todo_fields)
-    def get(self, todo_id):
-        """GET: Returns a single TODO."""
-        return todo_or_404(todo_id)
+    # @marshal_with(todo_fields)
+    # def get(self, todo_id):
+    #     """GET: Returns a single TODO."""
+    #     return todo_or_404(todo_id)
 
     @auth.login_required
     def put(self, todo_id):

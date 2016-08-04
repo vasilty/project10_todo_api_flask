@@ -105,7 +105,7 @@ class Todo(Resource):
 
 
 todos_api = Blueprint('resources.todos', __name__)
-api = Api(todos_api, catch_all_404s=True)
+api = Api(todos_api)
 api.add_resource(
     TodoList,
     '/todos',

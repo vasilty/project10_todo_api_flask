@@ -11,11 +11,11 @@
 
   <h1>My TODOs!</h1>
 
-    <div class="buttons" ng-controller="logoutController">
-        <button><a class="button-link" href="/#/">Home</a></button>
-        <button><a class="button-link" href="#register">Register</a></button>
-        <button><a class="button-link" href="#login">Login</a></button>
-        <button><a class="button-link" ng-click='logout()'>Logout</a></button>
+    <div class="navigation" ng-controller="logoutController">
+        <button><a href="/#/">Home</a></button>
+        <button><a href="#register">Register</a></button>
+        <button><a href="#login">Login</a></button>
+        <button><a ng-click='logout()'>Logout</a></button>
     </div>
 
   <div ng-view=""></div>

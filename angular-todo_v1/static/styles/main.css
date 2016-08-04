@@ -70,6 +70,21 @@ input[type="checkbox"]:checked + span {
     background:url(checkbox-filled.svg) left top no-repeat;
 }
 
+.navigation{
+    position: relative;
+}
+
+.navigation button {
+    font-size: 14px;
+    border-radius: 10%;
+    background-color: #5a6772;
+    border: 2px solid #5a6772;
+}
+
+.navigation button a {
+    color: white;
+}
+
 /* ==========================================================================
    Form Styles
    ========================================================================== */
@@ -102,44 +117,29 @@ input[type=submit] {
 	font-size: 16px;
 }
 
-.buttons{
-    position: relative;
+/* ==========================================================================
+   Flash Messages Styles
+   ========================================================================== */
+
+#flash-messages {
+    list-style: none;
+    padding-left: 0px;
 }
 
-button {
-    font-size: 14px;
-    border-radius: 10%;
-    background-color: #5a6772;
-    border: 2px solid #5a6772;
-}
-
-.button-link {
-    color: white;
+.flash-message {
+  display: inline-block;
+  text-align: center;
+  width: 50%;
+  border-radius: 3px;
+  font-size: 16px;
+  color: white;
+  padding: 0.7em 0.7em 0.7em 0.7em;
 }
 
 .success {
   background-color: rgba(60, 179, 113, 0.85);
-  display: inline-block;
-  text-align: center;
-  width: 50%;
-  border-radius: 3px;
-  font-size: 16px;
-  color: white;
-  padding: 0.7em 0.7em 0.7em 0.7em;
 }
 
 .error {
   background-color: rgba(165, 42, 42, 0.85);
-  display: inline-block;
-  text-align: center;
-  width: 50%;
-  border-radius: 3px;
-  font-size: 16px;
-  color: white;
-  padding: 0.7em 0.7em 0.7em 0.7em;
-}
-
-ol {
-    list-style: none;
-    padding-left: 0px;
 }

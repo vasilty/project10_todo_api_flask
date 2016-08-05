@@ -20,12 +20,7 @@ angular.module('todoListApp')
                 $scope.todos.splice(index, 1);
             // error
             }, function (error) {
-                if(error.status === 401) {
-                    var errorMessage = error.data;
-                } else {
-                    var errorMessage = error.data.message;
-                }
-                flash('error', errorMessage);
+                flash('error', error.data.message);
                 $timeout(function() {flash([])}, 2000);
             }
         );
@@ -41,8 +36,6 @@ angular.module('todoListApp')
             }
         });
 
-        var errorMessage = '';
-
         filteredTodos.forEach(function(todo) {
             if (todo.id) {
                 todo.$update(
@@ -51,12 +44,7 @@ angular.module('todoListApp')
                     },
                     // error
                     function (error) {
-                        if(error.status === 401) {
-                            errorMessage = error.data;
-                        } else {
-                            errorMessage = error.data.message;
-                        }
-                        flash('error', errorMessage);
+                        flash('error', error.data.message);
                         $timeout(function() {flash([])}, 2000);
                     });
 
@@ -67,12 +55,7 @@ angular.module('todoListApp')
                     },
                     // error
                     function (error) {
-                        if(error.status === 401) {
-                            errorMessage = error.data;
-                        } else {
-                            errorMessage = error.data.message;
-                        }
-                        flash('error', errorMessage);
+                        flash('error', error.data.message);
                         $timeout(function() {flash([])}, 2000);
                     }
                 );

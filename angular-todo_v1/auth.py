@@ -37,4 +37,9 @@ def unauthorized():
     """Handles an unauthorized error. 403 status code ("Forbidden") is returned
     instead of 401 ("Unauthorized") to avoid a browser authentication dialog.
     """
-    return make_response(jsonify({'error': 'Unauthorized access'}), 403)
+    return make_response(jsonify({'message': 'Unauthorized access'}), 403)
+
+
+@token_auth.error_handler
+def auth_error():
+    return make_response(jsonify({'message': 'Unauthorized access'}), 401)

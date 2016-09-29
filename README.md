@@ -1,3 +1,3 @@
-# project10_todo_api_flask
+# ToDo app
 
-Flask REST API for an Angular.js Todo app.
+Flask REST API provided for an Angular.js ToDo app.
